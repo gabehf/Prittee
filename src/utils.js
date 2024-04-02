@@ -60,7 +60,31 @@ const loadUser = async function() {
 }
 
 const loadUserPosts = async function () {
-    return makePitheeApiCall(playerPostsUrl, 'POST', null) // why POST?
+    return new Promise((resolve) => {
+        fetch(playerPostsUrl, {
+        method: 'POST',
+        headers: {
+            "apikey": localStorage.getItem('apikey'),
+            "authorization": localStorage.getItem('token'),
+            "Content-Type": "application/json"
+        },
+        body: null
+    })
+    .then(r => r.json().then(data => ({status: r.status, body: data})))
+    .then((r) => {
+        if (r.status >= 200 && r.status <= 299) { // OK range
+
+            // usually we check if the r.body return array length is 0, but that 
+            // fails on this call because the user may not have any posts, so
+            // just resolve
+
+            resolve(r.body)
+        } else {
+            alert("Your token has expired. Please re-enter your information to keep using Prittee.")
+            window.location.href = '/login'
+        }
+    })
+})
 }
 
 const loadCurrentWinner = async function() {
