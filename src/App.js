@@ -3,6 +3,7 @@ import { Box, Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import Header from './Components/Header';
 import Footer from './Components/Footer';
+import { Analytics } from "@vercel/analytics/react"
 
 // TODO:
 // - Leaderboard past #25 (pagination)
@@ -22,6 +23,7 @@ function App() {
             <Outlet />
           </Box>
       <Footer/>
+      <Analytics />
       </Box>
       </Container>
   );
