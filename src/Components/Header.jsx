@@ -1,7 +1,7 @@
 import { Box, Container } from "@mui/material"
-import { NavLink } from "react-router-dom";
 import { AccountBoxOutlined, PostAdd, LeaderboardOutlined } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
+import NavIcon from "./NavIcon";
 
 export default function Header() {
 
@@ -14,15 +14,21 @@ export default function Header() {
                 <p className="text-md text-slate-300">An <span className='text-sky-400 italic'>unofficial</span> alternate front end for Pithee</p>
             </Box>
             <Box className='flex flex-row justify-between m-auto mb-6' width={125}>
-                <Box>
-                    <NavLink to='/me'><AccountBoxOutlined /></NavLink>
-                </Box>
-                <Box>
-                    <NavLink to='/leaderboard'><LeaderboardOutlined /></NavLink>
-                </Box>
-                <Box>
-                    <NavLink to='/post'><PostAdd /></NavLink>
-                </Box>
+                <NavIcon
+                    label="Profile"
+                    href="/me"
+                    icon={AccountBoxOutlined}
+                />
+                <NavIcon
+                    label="Leaderboard"
+                    href="/leaderboard"
+                    icon={LeaderboardOutlined}
+                />
+                <NavIcon
+                    label="Add Post"
+                    href="/post"
+                    icon={PostAdd}
+                />
             </Box>
         </Container>
     )
