@@ -5,3 +5,14 @@ Prittee is an unofficial, experimental alternate front end for Pithee, the site 
 Prittee has some limitations due to it being an unofficial site, such as the fact that you can only be logged in for an hour at a time, so I don't expect this to replace the official Pithee site for people's pith-ing needs. This was mostly made as an exercise for me.
 
 The site is made in React, using React Router v6.
+
+## Albums that fueled development
+
+| Album                                              | Artist              |
+|----------------------------------------------------|---------------------|
+| I Brought You My Bullets, You Brought Me Your Love | My Chemical Romance |
+| Brother, Sister                                    | mewithoutYou        |
+| Clockwork Angels                                   | Rush                |
+| DROP                                               | Minami              |
+| Super Enthusiast                                   | Macseal             |
+| Lake                                               | LAKE                |
