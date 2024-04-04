@@ -1,5 +1,5 @@
 import { Box, Container } from "@mui/material"
-import { AccountBoxOutlined, PostAdd, LeaderboardOutlined } from '@mui/icons-material';
+import { AccountBoxOutlined, PostAdd, LeaderboardOutlined, WindowOutlined } from '@mui/icons-material';
 import { useNavigate } from "react-router-dom";
 import NavIcon from "./NavIcon";
 
@@ -14,6 +14,11 @@ export default function Header() {
                 <p className="text-md text-slate-300">An <span className='text-sky-400 italic'>unofficial</span> alternate front end for Pithee</p>
             </Box>
             <Box className='flex flex-row justify-between m-auto mb-6' width={125}>
+                <NavIcon
+                    label="Vote"
+                    href="/"
+                    icon={WindowOutlined}
+                />
                 <NavIcon
                     label="Profile"
                     href="/me"
