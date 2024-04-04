@@ -19,8 +19,29 @@ const tierIds = [
     '402261d8-4db8-4e24-8886-90dc6da6fcd1'
 ]
 
-
 const loadUser = async function() {
+    return new Promise((resolve) => {
+        fetch('https://oqutjaxxxzzbjtyrfoka.supabase.co/rest/v1/rpc/get_player_data', {
+            method: 'POST', // why post?
+            headers: {
+                "APIKey": localStorage.getItem("apikey"),
+                "Authorization": localStorage.getItem("token")
+            }
+        }).then(r =>  r.json().then(data => ({status: r.status, body: data})))
+        .then((r) => {
+            // note: when an empty bearer token is provided, the server responds with 200 OK with an empty array as
+            // the body instead of the expected 401. This is a bug with Pithee that we need to account for!
+            if (r.body.length > 0) {
+                resolve(r.body[0])
+            } else {
+                alertLoginExpired()
+            }
+        })
+    })
+}
+
+
+const checkLogin = async function() {
     return new Promise((resolve) => {
         fetch('https://oqutjaxxxzzbjtyrfoka.supabase.co/rest/v1/rpc/get_player_data', {
             method: 'POST', // why post?
@@ -51,7 +72,7 @@ const loadUser = async function() {
                 })
             }
         }).catch((err) => {
-            alert(err)
+            // alert(err)
             resolve({
                 success: false,
             })
@@ -80,8 +101,7 @@ const loadUserPosts = async function () {
 
             resolve(r.body)
         } else {
-            alert("Your token has expired. Please re-enter your information to keep using Prittee.")
-            window.location.href = '/login'
+            alertLoginExpired()
         }
     })
 })
@@ -180,8 +200,7 @@ const makePitheeNoContentApiCall = async function(url, method, body) {
             if (r.status >= 200 && r.status <= 299) { // OK range
                 resolve(r.body)
             } else if (r.status === 401) {
-                alert("Your token has expired. Please re-enter your information to keep using Prittee.")
-                window.location.href = '/login'
+                alertLoginExpired()
             } else {
                 // TODO: this is little information for the client.
                 // the server could be responding with a 401 due to expired
@@ -211,13 +230,11 @@ const makePitheeApiCall = async function(url, method, body) {
             if (r.status >= 200 && r.status <= 299) { // OK range
                 // check if empty array is given (token is null)
                 if (r.body.length == 0) {
-                    alert("Your token has expired. Please re-enter your information to keep using Prittee.")
-                    window.location.href = '/login'
+                    alertLoginExpired()
                 }
                 resolve(r.body)
             } else if (r.status === 401) {
-                alert("Your token has expired. Please re-enter your information to keep using Prittee.")
-                window.location.href = '/login'
+                alertLoginExpired()
             } else {
                 // TODO: this is little information for the client.
                 // the server could be responding with a 401 due to expired
@@ -227,6 +244,16 @@ const makePitheeApiCall = async function(url, method, body) {
             }
         })
     })
+}
+
+// sends the "Your login has expired" alert IF the user has logged in before
+// sends a silent redirect to /login if the user has never logged in
+const alertLoginExpired = () => {
+    if (localStorage.getItem('apikey') != null) {
+        console.log(localStorage.getItem('apikey'))
+        alert("Your token has expired. Please re-enter your information to keep using Prittee.")
+    }
+    window.location.href = '/login'
 }
 
 export { 
@@ -239,4 +266,5 @@ export {
     loadUserPosts, 
     loadLeaderboardPage,
     insertPost,
+    checkLogin,
 }

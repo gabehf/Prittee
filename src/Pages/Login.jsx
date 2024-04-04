@@ -5,7 +5,7 @@ import { Container } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import { loadUser } from '../utils'
+import { checkLogin, loadUser } from '../utils'
 
 // TODO: change api key and token inputs to one input for Copy -> Request Headers
 
@@ -14,7 +14,7 @@ export default function Login() {
     const navigate = useNavigate()
 
     const [ token, setToken ] = useState('')
-    const [ apikey, setApiKey ] = useState(localStorage.getItem("apikey"))
+    const [ apikey, setApiKey ] = useState(localStorage.getItem("apikey") == null ? '' : localStorage.getItem('apikey'))
     const [ failText, setFailText ] = useState('')
     const [ apiKeyErr, setApiKeyErr ] = useState(false)
     const [ tokenErr, setTokenErr ] = useState(false)
@@ -31,7 +31,7 @@ export default function Login() {
         // ensure the bearer token provided is valid 
         localStorage.setItem('token', token)
         localStorage.setItem('apikey', apikey)
-        loadUser().then((r) => {
+        checkLogin().then((r) => {
             setLoading(false)
             if (r.success) {
                 navigate('/')
@@ -59,7 +59,7 @@ export default function Login() {
                 <p className='text-center'>Add your Pithee api key and authorization token to start using Prittee.<br/>
                     You can find out how to get your info <Link href="https://zircon-stoplight-fbb.notion.site/Prittee-Introduction-0e418deda00242ebb6026d074b397629">here</Link>.</p>
                 <Box component="div" display="flex" flexDirection="row" alignItems="center" justifyContent="center" gap={4} className='mt-6'>
-                    <TextField id="apikey" error={apiKeyErr} onChange={onApiKeyChange} label="API Key" variant="outlined" value={localStorage.getItem("apikey")} />
+                    <TextField id="apikey" error={apiKeyErr} onChange={onApiKeyChange} label="API Key" variant="outlined" value={apikey} />
                     <TextField id="auth-token" error={tokenErr} helperText={failText} onChange={onTokenChange} label="Authorization Token" variant="outlined" />
                     <LoadingButton loading={loading} variant="text" size="large" onClick={addUserToken}>Let's Go</LoadingButton>
                 </Box>

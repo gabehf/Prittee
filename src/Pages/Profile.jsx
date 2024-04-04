@@ -36,7 +36,6 @@ export default function Profile() {
             <Await resolve={Promise.all([user, posts]).then(value => value)}>
                 {(value) => {
                     let [ user, posts ] = value
-                    user = user.user
                     const totalPoints = user.total_points > 0 ? user.total_points : posts.reduce((n, p) => n + p.points, 0);
                     return(
                         <Box className='flex flex-col items-center'>
